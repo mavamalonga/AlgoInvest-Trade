@@ -34,9 +34,10 @@ class RentAlgo:
 	def select_shares(self):
 		shares_selected = []
 		for share in self.shares:
-			while self.sold > int(share['cout']):
+			if self.sold > int(share['cout']):
 				self.sold = self.sold -int(share['cout'])
 				shares_selected.append(share)
+				print(share['action'])
 		return shares_selected
 
 	def yields(self, shares_selected):
