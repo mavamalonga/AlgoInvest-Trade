@@ -55,11 +55,13 @@ class BruteForce:
 				for i in your_list:
 					for x in a:
 						if int(i['cout'])+x <= 500:
+							val = (int(i['cout'])+x, str())
 							a_bis.append(int(i['cout'])+x)
 						else:
 							a_bis.append(x)	
 					a = [c for c in a_bis]
 					print(a)
+					exit()
 			complete_list = complete_list+a
 			print(complete_list)
 
