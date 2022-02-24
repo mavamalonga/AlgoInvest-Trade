@@ -28,19 +28,43 @@ class BruteForce:
 
 	def buy_actions(self):
 		for action in self.action:
-			if self.check_actions_purchased(actions_purchased) == False:
+			if self.check_actions_purchased(complete_list) == False:
 				if self.check_sold(action):
 					yields = self.calculate_yields(action)
 					actions_purchased.append(action)
 
 	def try_all_possibilities_for_value(self):
-		list_buy_actions = []
-		max_yields = []
-		for action in self.actions:
-			self.buy_actions(list_buy_actions)
+		your_list = 'abcd'
+		complete_list = []
+		for current in range(4):
+			a = [i for i in your_list]
+			for y in range(current):
+				a = [x+i for i in your_list for x in a if i not in x]
+			complete_list = complete_list+a
+		print(complete_list)
+
+	def algo_brute_force(self):
+		your_list = self.actions
+		complete_list = []
+		propositions = []
+		a_bis = []
+
+		for current in range(len(your_list)):
+			a = [int(i['cout']) for i in your_list]
+			for y in range(current):
+				for i in your_list:
+					for x in a:
+						if int(i['cout'])+x <= 500:
+							a_bis.append(int(i['cout'])+x)
+						else:
+							a_bis.append(x)	
+					a = [c for c in a_bis]
+					print(a)
+			complete_list = complete_list+a
+			print(complete_list)
 
 	def main(self):
-		self.try_all_possibilities_for_value()
+		self.algo_brute_force()
 
 
 if __name__ == '__main__':
