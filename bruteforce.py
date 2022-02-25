@@ -50,20 +50,17 @@ class BruteForce:
 		a_bis = []
 
 		for current in range(len(your_list)):
-			a = [int(i['cout']) for i in your_list]
-			for y in range(current):
-				for i in your_list:
-					for x in a:
-						if int(i['cout'])+x <= 500:
-							val = (int(i['cout'])+x, str())
-							a_bis.append(int(i['cout'])+x)
-						else:
-							a_bis.append(x)	
-					a = [c for c in a_bis]
-					print(a)
-					exit()
-			complete_list = complete_list+a
-			print(complete_list)
+			i_index = your_list.pop(0)
+			your_list.append(i_index)
+			a = [i['action'][7:] for i in self.actions]
+			for i in your_list:
+				for x in a:
+					val = i['action'][7:]+ "$" + x
+					a_bis.append(val)
+				a = [c for c in a_bis]
+				print(a)
+				exit()
+			#complete_list = complete_list+a
 
 	def main(self):
 		self.algo_brute_force()
