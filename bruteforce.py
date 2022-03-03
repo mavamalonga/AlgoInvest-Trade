@@ -30,6 +30,42 @@ class BruteForce:
 				return True
 		return False
 
+	def create_combinations(self, combinations, actions):
+		max_yields = 0
+		list_next_level_combinations = []
+		copy_combination = []
+		print(f"nb combinations {len(combinations)}")
+		for combination in combinations:
+			for action in actions:
+				copy_combination = [c for c in combination]
+				if self.check_action_not_in_group(action, combination):
+					copy_combination.append(action)
+					total_cost = self.calculate_cost(copy_combination)
+					if total_cost < self.sold:
+						list_next_level_combinations.append(copy_combination)
+					else:
+						if self.check_other_elem_can_add(combination, total_cost):
+							list_next_level_combinations.append(combination)
+						else:
+							yields = self.calculate_yields(combination)
+							if yields > max_yields:
+								max_yields = yields
+								print({"yields": max_yields})
+								print({"actions": combination})
+				else:
+					list_next_level_combinations.append(combination)
+		return list_next_level_combinations
+
+	def call_next_combinations(self, combinations):
+		for i in range(len(self.actions)):
+			combinations = self.create_combinations(combinations, self.actions)
+
+	def main_combination(self):
+		for index in range(len(self.actions)):
+			first_combinations = [[self.actions[index]] for i in range(len(self.actions))]
+			print(f"{self.actions[index]}")
+			self.call_next_combinations(first_combinations)
+
 	def main(self):
 		actions = self.actions
 		max_yields = 0
@@ -37,7 +73,7 @@ class BruteForce:
 		for current in range(len(actions)):
 			group_actions = [[a] for a in self.actions]
 			group_actions_bis = []
-			print(f"combinations index action : {current}")
+			print(f"action index : {current}")
 			for action in actions:
 				for group in group_actions:
 					if self.check_action_not_in_group(action, group):
@@ -53,15 +89,17 @@ class BruteForce:
 								yields = self.calculate_yields(group)
 								if yields > max_yields:
 									max_yields = yields
-									print({"action":f"{action}", "yields": max_yields})
+									print({"yields": max_yields})
 					else:
 						group_actions_bis.append(group)
-				group_actions = [group for group in group_actions_bis]
+				group_actions = [grp for grp in group_actions_bis]
 			index = actions.pop(0)
 			actions.append(index)
+		print({"actions":f"{group}", "yields": max_yields})
 
 
 if __name__ == '__main__':
 	bf = BruteForce(actions, sold)
-	max_yield = bf.main()
+	#bf.main()
+	bf.main_combination()
 		
