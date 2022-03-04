@@ -12,14 +12,14 @@ class BruteForce:
 	def calculate_cost(self, group):
 		total_cost = 0
 		for action in group:
-			total_cost = total_cost + int(action['cout'])
+			total_cost = total_cost + float(action['cout'])
 		return total_cost
 
 	def calculate_yield(self, groups):
 		profit = 0
 		percentage = 0
 		for action in groups:
-			profit = profit + int(action['cout']) + int(action['cout'])*(int(action['benefice'])/100)
+			profit = profit + float(action['cout']) + int(action['cout'])*(float(action['benefice'])/100)
 		return profit
 
 	def combinations(self, iterable, r):
@@ -44,14 +44,15 @@ class BruteForce:
 
 	def display_result(self, combination):
 		t = PrettyTable(['Action', 'Coût', 'Rendement (APY)', 'Profits après 2 ans'])
-		actions = [[action['action'], action['cout']+"€", 
-			action['benefice']+"%", None] for action in combination['combination']]
+		actions = [[action['action'], action['cout']+"€", action['benefice']+"%", 
+		str(round(float(float(action['cout'])))+(float(action['cout'])*(float(action['benefice'])/100)))+"€"] \
+		for action in combination['combination']]
 		for action in actions:
 			t.add_row(action)
 		t.add_row(['Total',str(round(combination['total_cost'], 2))+"€", 
 			str(round(combination['percentage'], 2))+"%",str(round(combination['yields'], 2))+"€"])
+		print(f"SOLDE DEPART : {self.sold}€")
 		print(t.get_string(title="AlgoInvest&Trade"))
-
 
 	def main(self):
 		max_profit = 0
