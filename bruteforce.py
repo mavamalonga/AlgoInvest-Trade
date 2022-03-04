@@ -1,6 +1,7 @@
+from itertools import combinations
+from tabulate import tabulate
+from prettytable import PrettyTable
 from data import actions, sold
-import yaml
-import json
 
 
 class BruteForce:
@@ -14,92 +15,61 @@ class BruteForce:
 			total_cost = total_cost + int(action['cout'])
 		return total_cost
 
-	def calculate_yields(self, groups):
-		yields = 0
+	def calculate_yield(self, groups):
+		profit = 0
+		percentage = 0
 		for action in groups:
-			yields = yields + int(action['cout']) + int(action['cout'])*(int(action['benefice'])/100)
-		return yields
+			profit = profit + int(action['cout']) + int(action['cout'])*(int(action['benefice'])/100)
+		return profit
 
-	def check_action_not_in_group(self, action, group):
-		return action not in group
+	def combinations(self, iterable, r):
+	    # combinations('ABCD', 2) --> AB AC AD BC BD CD
+	    # combinations(range(4), 3) --> 012 013 023 123
+	    pool = tuple(iterable)
+	    n = len(pool)
+	    if r > n:
+	        return
+	    indices = list(range(r))
+	    yield tuple(pool[i] for i in indices)
+	    while True:
+	        for i in reversed(range(r)):
+	            if indices[i] != i + n - r:
+	                break
+	        else:
+	            return
+	        indices[i] += 1
+	        for j in range(i+1, r):
+	            indices[j] = indices[j-1] + 1
+	        yield tuple(pool[i] for i in indices)
 
-	def check_other_elem_can_add(self, group, total_cost):
-		for action in self.actions:
-			action_not_in_group = self.check_action_not_in_group(action, group)
-			if total_cost + int(action['cout']) < self.sold and action_not_in_group:
-				return True
-		return False
+	def display_result(self, combination):
+		t = PrettyTable(['Action', 'Coût', 'Rendement (APY)', 'Profits après 2 ans'])
+		actions = [[action['action'], action['cout']+"€", 
+			action['benefice']+"%", None] for action in combination['combination']]
+		for action in actions:
+			t.add_row(action)
+		t.add_row(['Total',str(round(combination['total_cost'], 2))+"€", 
+			str(round(combination['percentage'], 2))+"%",str(round(combination['yields'], 2))+"€"])
+		print(t.get_string(title="AlgoInvest&Trade"))
 
-	def create_combinations(self, combinations, actions):
-		max_yields = 0
-		list_next_level_combinations = []
-		copy_combination = []
-		print(f"nb combinations {len(combinations)}")
-		for combination in combinations:
-			for action in actions:
-				copy_combination = [c for c in combination]
-				if self.check_action_not_in_group(action, combination):
-					copy_combination.append(action)
-					total_cost = self.calculate_cost(copy_combination)
-					if total_cost < self.sold:
-						list_next_level_combinations.append(copy_combination)
-					else:
-						if self.check_other_elem_can_add(combination, total_cost):
-							list_next_level_combinations.append(combination)
-						else:
-							yields = self.calculate_yields(combination)
-							if yields > max_yields:
-								max_yields = yields
-								print({"yields": max_yields})
-								print({"actions": combination})
-				else:
-					list_next_level_combinations.append(combination)
-		return list_next_level_combinations
-
-	def call_next_combinations(self, combinations):
-		for i in range(len(self.actions)):
-			combinations = self.create_combinations(combinations, self.actions)
-
-	def main_combination(self):
-		for index in range(len(self.actions)):
-			first_combinations = [[self.actions[index]] for i in range(len(self.actions))]
-			print(f"{self.actions[index]}")
-			self.call_next_combinations(first_combinations)
 
 	def main(self):
-		actions = self.actions
-		max_yields = 0
+		max_profit = 0
+		for size_combinations in range(len(self.actions)+1):
+			if size_combinations > 0:
+				combinations = list(self.combinations(self.actions, size_combinations))
+				for combination in combinations:
+					total_cost = self.calculate_cost(combination)
+					profit = self.calculate_yield(combination)
+					if total_cost < self.sold and profit > max_profit:
+						max_profit = profit
+						percentage = (profit-self.sold)/self.sold*100
+						best_combination = {"combination": combination, 
+							"total_cost": total_cost, "yields":max_profit, "percentage": percentage}
+		self.display_result(best_combination)
 
-		for current in range(len(actions)):
-			group_actions = [[a] for a in self.actions]
-			group_actions_bis = []
-			print(f"action index : {current}")
-			for action in actions:
-				for group in group_actions:
-					if self.check_action_not_in_group(action, group):
-						group.append(action)
-						total_cost = self.calculate_cost(group)
-						if total_cost < self.sold:
-							group_actions_bis.append(group)
-						else:
-							group.pop(-1)
-							if self.check_other_elem_can_add(group, total_cost):	
-								group_actions_bis.append(group)
-							else:
-								yields = self.calculate_yields(group)
-								if yields > max_yields:
-									max_yields = yields
-									print({"yields": max_yields})
-					else:
-						group_actions_bis.append(group)
-				group_actions = [grp for grp in group_actions_bis]
-			index = actions.pop(0)
-			actions.append(index)
-		print({"actions":f"{group}", "yields": max_yields})
-
-
+					
 if __name__ == '__main__':
-	bf = BruteForce(actions, sold)
-	#bf.main()
-	bf.main_combination()
+	bruteforce = BruteForce(actions, sold)
+	bruteforce.main()
 		
