@@ -2,6 +2,7 @@ from itertools import combinations
 from tabulate import tabulate
 from prettytable import PrettyTable
 from data import actions, sold
+import time
 
 
 class BruteForce:
@@ -71,7 +72,8 @@ class BruteForce:
 
 					
 if __name__ == '__main__':
-	 # input: a set of items, each with a weight and a value
+	start_time = time.time()
 	bruteforce = BruteForce(actions, sold)
 	bruteforce.main()
+	print("--- %s seconds ---" % (time.time() - start_time))
 		

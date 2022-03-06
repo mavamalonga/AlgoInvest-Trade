@@ -2,7 +2,8 @@
 from data import actions, sold
 from math import floor
 from prettytable import PrettyTable
-import codecs
+import time
+
 
 class AlgoInvestTrade:
 	def __init__(self, deposit, shares):
@@ -63,7 +64,9 @@ class AlgoInvestTrade:
 
 
 if __name__ == '__main__':
+	start_time = time.time()
 	deposit = sold
 	shares = actions
 	invest = AlgoInvestTrade(deposit, shares)
 	invest.main()
+	print("--- %s seconds ---" % (time.time() - start_time))
