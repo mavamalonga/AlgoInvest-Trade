@@ -71,6 +71,7 @@ class BruteForce:
 
 					
 if __name__ == '__main__':
+	 # input: a set of items, each with a weight and a value
 	bruteforce = BruteForce(actions, sold)
 	bruteforce.main()
 		
