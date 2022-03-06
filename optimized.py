@@ -1,4 +1,5 @@
 from data import actions, sold
+from math import floor
 # a dynamic approach
 # Returns the maximum value that can be stored by the bag
 def knapSack(W, wt, val, n):
@@ -13,15 +14,26 @@ def knapSack(W, wt, val, n):
 				K[i][w] = max(reward + K[i-1][w-int(wt[i-1]['cout'])],  K[i-1][w])
 			else:
 				K[i][w] = K[i-1][w]
-	return K[n][W]
-"""
-#Main
-val = [50,100,150,200,10] #un tableau de valeurs qui contient la valeur de tous les éléments <=>RENDEMENT
-wt = [8,16,32,40,10] #nous avons un tableau de poids qui contient le poids de tous les éléments <=> COUT
-W = 74 #nous avons une capacité de poids totale du sac à dos <=> SOLDE 
-n = len(val)
-print(knapSack(W, wt, val, n))
-"""
+
+	w = W # k > W
+	n = len(actions) #len(shares_list)
+	optimized_portfolio = []
+	somme = 0
+	rew_sum = 0
+	while w >=0 and n>=0:
+		previous_share = actions[n-1]
+		reward = int(previous_share['cout'])+int(previous_share['cout'])*int(previous_share['benefice'])/100
+		if K[n][floor(w)] == K[n-1][floor(w)-int(previous_share['cout'])]+reward:
+			optimized_portfolio.append(previous_share)
+			w -= int(previous_share['cout'])
+			rew_sum = rew_sum + int(previous_share['cout'])+int(previous_share['cout'])*int(previous_share['benefice'])/100
+			somme = somme + int(previous_share['cout'])
+		n -=1
+	print(somme)
+	print(rew_sum)
+	return optimized_portfolio
+
+
 W = sold
 wt = actions
 val = actions
