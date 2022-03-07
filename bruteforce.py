@@ -1,4 +1,4 @@
-from itertools import combinations
+from itertools import combinations, permutations
 from tabulate import tabulate
 from prettytable import PrettyTable
 from data import actions, sold
@@ -24,24 +24,25 @@ class BruteForce:
 		return profit
 
 	def combinations(self, iterable, r):
-	    # combinations('ABCD', 2) --> AB AC AD BC BD CD
-	    # combinations(range(4), 3) --> 012 013 023 123
-	    pool = tuple(iterable)
-	    n = len(pool)
-	    if r > n:
-	        return
-	    indices = list(range(r))
-	    yield tuple(pool[i] for i in indices)
-	    while True:
-	        for i in reversed(range(r)):
-	            if indices[i] != i + n - r:
-	                break
-	        else:
-	            return
-	        indices[i] += 1
-	        for j in range(i+1, r):
-	            indices[j] = indices[j-1] + 1
-	        yield tuple(pool[i] for i in indices)
+		# combinations('ABCD', 2) --> AB AC AD BC BD CD
+		# combinations(range(4), 3) --> 012 013 023 123
+		pool = tuple(iterable)
+		n = len(pool)
+		if r > n:
+			return
+		indices = list(range(r))
+		yield tuple(pool[i] for i in indices)
+		while True:
+			for i in reversed(range(r)):
+				if indices[i] != i + n - r:
+					break
+			else:
+				return
+			indices[i] += 1
+			for j in range(i+1, r):
+				indices[j] = indices[j-1] + 1
+			yield tuple(pool[i] for i in indices)
+	
 
 	def display_result(self, combination):
 		t = PrettyTable(['Action', 'Coût', 'Rendement (APY)', 'Profits après 2 ans'])

@@ -13,16 +13,25 @@ class AlgoInvestTrade:
 
 	def knapSack(self, W, wt, val, n):
 		K = [[0 for x in range(W + 1)] for x in range(n + 1)]
-		#Table in bottom up manner
+		"""We will be using nested for loops to traverse through the table and fill entires in each cell.
+		We are going to fill the table in a bottom up manner."""
 		for i in range(n + 1):
 			for w in range(W + 1):
+				#This part of the code is responsible for setting the 0th row and column to 0.
 				if i == 0 or w == 0:
 					K[i][w] = 0
 				elif int(wt[i-1]['cout']) <= w:
+					"""This line of code checks that the weight of the i(th) object is less that 
+					the total weight permissible for that cell (j)."""
 					reward = int(val[i-1]['cout'])+int(val[i-1]['cout'])*int(val[i-1]['benefice'])/100
 					K[i][w] = max(reward + K[i-1][w-int(wt[i-1]['cout'])],  K[i-1][w])
+					"""This line of code is responsible for selecting the maximum out of the two options available to us. 
+					We can either include the object or exclude it."""
 				else:
+					"""This part of the loop is accessed when the weight of ith object is greater 
+					than the permissible limit (j)."""
 					K[i][w] = K[i-1][w]
+		"""When we are done filling the table we can return the last cell of the table as the answer."""
 		return K[n][w], K
 	
 	def make_portfolio(self, table):
@@ -65,8 +74,8 @@ class AlgoInvestTrade:
 
 if __name__ == '__main__':
 	start_time = time.time()
-	deposit = sold
+	capital = sold
 	shares = actions
-	invest = AlgoInvestTrade(deposit, shares)
+	invest = AlgoInvestTrade(capital, shares)
 	invest.main()
 	print("--- %s seconds ---" % (time.time() - start_time))
