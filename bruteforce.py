@@ -24,8 +24,6 @@ class BruteForce:
 		return profit
 
 	def combinations(self, iterable, r):
-		# combinations('ABCD', 2) --> AB AC AD BC BD CD
-		# combinations(range(4), 3) --> 012 013 023 123
 		pool = tuple(iterable)
 		n = len(pool)
 		if r > n:
@@ -42,7 +40,6 @@ class BruteForce:
 			for j in range(i+1, r):
 				indices[j] = indices[j-1] + 1
 			yield tuple(pool[i] for i in indices)
-	
 
 	def display_result(self, combination):
 		t = PrettyTable(['Action', 'Coût', 'Rendement (APY)', 'Profits après 2 ans'])

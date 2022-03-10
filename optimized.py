@@ -1,81 +1,86 @@
 # -*- coding: utf-8 -*-
 from data import actions, sold
-from math import floor
 from prettytable import PrettyTable
+from math import floor,ceil
 import time
+import csv
 
 
 class AlgoInvestTrade:
-	def __init__(self, deposit, shares):
-		self.deposit = deposit
-		self.shares = shares
-		self.len_shares = len(shares)
+	def __init__(self, amount, filename):
+		self.amount = amount
+		self.filename = filename
 
-	def knapSack(self, W, wt, val, n):
-		K = [[0 for x in range(W + 1)] for x in range(n + 1)]
-		"""We will be using nested for loops to traverse through the table and fill entires in each cell.
-		We are going to fill the table in a bottom up manner."""
+	def serializer(self, filename):
+		shares = []
+		with open(f'{filename}.csv', newline='') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in spamreader:
+				share = ', '.join(row).split(",")
+				if share[0] != 'name' and float(share[1])>0.0:
+					shares.append({"share":share[0],"price": float(share[1]),
+						"profit":float(share[2])})
+		new_shares = sorted(shares, key=lambda d: d['price'])
+		return new_shares
+
+	def combinations(self, amount, shares):
+		n = len(shares)
+		table = [[0 for x in range(amount + 1)] for x in range(n + 1)]
 		for i in range(n + 1):
-			for w in range(W + 1):
-				#This part of the code is responsible for setting the 0th row and column to 0.
+			for w in range(amount + 1):
 				if i == 0 or w == 0:
-					K[i][w] = 0
-				elif int(wt[i-1]['cout']) <= w:
-					"""This line of code checks that the weight of the i(th) object is less that 
-					the total weight permissible for that cell (j)."""
-					reward = int(val[i-1]['cout'])+int(val[i-1]['cout'])*int(val[i-1]['benefice'])/100
-					K[i][w] = max(reward + K[i-1][w-int(wt[i-1]['cout'])],  K[i-1][w])
-					"""This line of code is responsible for selecting the maximum out of the two options available to us. 
-					We can either include the object or exclude it."""
+					table[i][w] = 0
+				elif ceil(shares[i-1]['price'])<= w:
+					reward = shares[i-1]['price']+(shares[i-1]['price']*shares[i-1]['profit']/100)
+					table[i][w] = max(reward + table[i-1][w-ceil(shares[i-1]['price'])], table[i-1][w])
 				else:
-					"""This part of the loop is accessed when the weight of ith object is greater 
-					than the permissible limit (j)."""
-					K[i][w] = K[i-1][w]
-		"""When we are done filling the table we can return the last cell of the table as the answer."""
-		return K[n][w], K
+					table[i][w] = table[i-1][w]
+		return table
 	
-	def make_portfolio(self, table):
-		K = table
-		n = self.len_shares
-		w = self.deposit
+	def portfolio(self, table, shares):
+		n,amount,cost,profit = len(shares),self.amount,0,0
 		portfolio = []
-		total_cost = 0
-		profit = 0
-		while w >=0 and n>=0:
-			share = actions[n-1]
-			reward = int(share['cout'])+int(share['cout'])*int(share['benefice'])/100
-			if K[n][floor(w)] == K[n-1][floor(w)-int(share['cout'])]+reward:
+		while amount >=0 and n>=0:
+			share = shares[n-1]
+			reward = share['price']+share['price']*share['profit']/100
+			if table[n][amount] == table[n-1][amount-ceil(share['price'])]+reward:
 				portfolio.append(share)
-				w -= int(share['cout'])
-				profit = profit + int(share['cout'])+int(share['cout'])*int(share['benefice'])/100
-				total_cost = total_cost + int(share['cout'])
+				amount -= ceil(share['price'])
+				profit = profit + reward
+				cost = cost + share['price']
 			n -=1
-		percentage = (profit-self.deposit)/self.deposit*100
-		portfolio = {"combination": portfolio, "total_cost": total_cost, "yields":profit, "percentage": percentage}
-		return portfolio
+		pnl = profit - cost
+		sum_total = profit + (self.amount-cost)
+		return {"shares": portfolio, "cost": cost, "return":pnl, "sum": sum_total}
 
-	def display_result(self, combination):
-		t = PrettyTable(['share', 'Cost', 'percentage yields in 2 years', 'Profit 2 years after'])
-		actions = [[action['action'], action['cout']+"E", action['benefice']+"%", 
-		str(round(float(float(action['cout'])))+(float(action['cout'])*(float(action['benefice'])/100)))+"E"] \
-		for action in combination['combination']]
-		for action in actions:
-			t.add_row(action)
-		t.add_row(['Total',str(round(combination['total_cost'], 2))+"E", 
-			str(round(combination['percentage'], 2))+"%",str(round(combination['yields'], 2))+"E"])
-		print(f"SOLDE DEPART : {self.deposit}E")
+
+	def display(self, portfolio):
+		shares = []
+		t = PrettyTable(['share', 'price($)', 'yield(%)', 'benefit($)'])
+		for share in portfolio['shares']:
+			benef = share['price']*share['profit']/100
+			s = [share['share'], share['price'], share['profit'], round(benef, 2)]
+			shares.append(s)
+
+		for share in shares:
+			t.add_row(share)
+		t.add_row(['Total price', '######', '######', str(round(portfolio['cost'], 2))+"$"])
+		t.add_row(['Total earned', '######', '######', str(round(portfolio['return'], 2))+"$"])
+		t.add_row(['Total recovered', '######', '######', str(round(portfolio['sum'], 2))+"$"])
+		print(f"Starting balance : {self.amount}$")
 		print(t.get_string(title="AlgoInvest&Trade"))
 
 	def main(self):
-		max_rewards, table = self.knapSack(self.deposit, self.shares, self.shares, self.len_shares)
-		portfolio = self.make_portfolio(table)
-		self.display_result(portfolio)
+		shares = self.serializer(self.filename)
+		table = self.combinations(self.amount,shares)
+		portfolio = self.portfolio(table,shares)
+		self.display(portfolio)
 
 
 if __name__ == '__main__':
 	start_time = time.time()
-	capital = sold
-	shares = actions
-	invest = AlgoInvestTrade(capital, shares)
-	invest.main()
+	amount = 500
+	filename = 'dataset1'
+	algoInvestTrade = AlgoInvestTrade(amount, filename)
+	algoInvestTrade.main()
 	print("--- %s seconds ---" % (time.time() - start_time))
