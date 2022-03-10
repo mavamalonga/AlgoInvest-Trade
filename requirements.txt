@@ -1,0 +1,4 @@
+prettytable==3.1.1
+PyYAML==6.0
+tabulate==0.8.9
+wcwidth==0.2.5

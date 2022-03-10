@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from data import actions, sold
 from prettytable import PrettyTable
 from math import floor,ceil
 import time
@@ -13,7 +12,8 @@ class Dynamic_Approach:
 
 	def serializer(self, filename):
 		shares = []
-		with open(f'{filename}.csv', newline='') as csvfile:
+		file = "%s.csv" %(filename)
+		with open(file, newline='') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 			for row in spamreader:
 				share = ', '.join(row).split(",")
@@ -80,7 +80,7 @@ class Dynamic_Approach:
 if __name__ == '__main__':
 	start_time = time.time()
 	amount = 500
-	filename = 'dataset1'
+	filename = 'dataset2'
 	algoInvestTrade = Dynamic_Approach(amount, filename)
 	algoInvestTrade.main()
 	print("--- %s seconds ---" % (time.time() - start_time))

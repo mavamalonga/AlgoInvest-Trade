@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from data import actions, sold
 from prettytable import PrettyTable
 from math import floor,ceil
 import time
@@ -14,7 +13,8 @@ class BruteForce:
 
 	def serializer(self, filename):
 		shares = []
-		with open(f'{filename}.csv', newline='') as csvfile:
+		file = "%s.csv" %(filename)
+		with open(file, newline='') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 			for row in spamreader:
 				share = ', '.join(row).split(",")
@@ -65,7 +65,7 @@ class BruteForce:
 		for share in shares:
 			t.add_row(share)
 		t.add_row(['Total price', '######', '######', str(round(portfolio['cost'], 2))+"$"])
-		t.add_row(['Total earned', '######', '######', str(round(portfolio['return'], 2))+"$"])
+		t.add_row(['Total profit', '######', '######', str(round(portfolio['return'], 2))+"$"])
 		t.add_row(['Total recovered', '######', '######', str(round(portfolio['sum'], 2))+"$"])
 		print(f"Starting balance : {self.amount}$")
 		print(t.get_string(title="AlgoInvest&Trade"))
