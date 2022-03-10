@@ -1,27 +1,35 @@
-from itertools import combinations, permutations
-from tabulate import tabulate
-from prettytable import PrettyTable
+# -*- coding: utf-8 -*-
 from data import actions, sold
+from prettytable import PrettyTable
+from math import floor,ceil
 import time
+import csv
+
 
 
 class BruteForce:
-	def __init__(self, actions, sold):
-		self.actions = actions
-		self.sold = sold
+	def __init__(self, amount, filename):
+		self.amount = amount
+		self.filename = filename
 
-	def calculate_cost(self, group):
-		total_cost = 0
-		for action in group:
-			total_cost = total_cost + float(action['cout'])
-		return total_cost
+	def serializer(self, filename):
+		shares = []
+		with open(f'{filename}.csv', newline='') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in spamreader:
+				share = ', '.join(row).split(",")
+				if share[0] != 'name' and float(share[1])>0.0:
+					shares.append({"share":share[0],"price": float(share[1]),
+						"profit":float(share[2])})
+		new_shares = sorted(shares, key=lambda d: d['price'])
+		return new_shares
 
-	def calculate_yield(self, groups):
-		profit = 0
-		percentage = 0
-		for action in groups:
-			profit = profit + float(action['cout']) + int(action['cout'])*(float(action['benefice'])/100)
-		return profit
+	def calculate_cost_and_profit(self, shares):
+		cost, profit = 0, 0
+		for share in shares:
+			cost += share['price']
+			profit += share['price']+share['price']*share['profit']/100
+		return cost, profit
 
 	def combinations(self, iterable, r):
 		pool = tuple(iterable)
@@ -41,37 +49,46 @@ class BruteForce:
 				indices[j] = indices[j-1] + 1
 			yield tuple(pool[i] for i in indices)
 
-	def display_result(self, combination):
-		t = PrettyTable(['Action', 'Coût', 'Rendement (APY)', 'Profits après 2 ans'])
-		actions = [[action['action'], action['cout']+"€", action['benefice']+"%", 
-		str(round(float(float(action['cout'])))+(float(action['cout'])*(float(action['benefice'])/100)))+"€"] \
-		for action in combination['combination']]
-		for action in actions:
-			t.add_row(action)
-		t.add_row(['Total',str(round(combination['total_cost'], 2))+"€", 
-			str(round(combination['percentage'], 2))+"%",str(round(combination['yields'], 2))+"€"])
-		print(f"SOLDE DEPART : {self.sold}€")
+	def portfolio(self, shares, cost, profit):
+		pnl = profit - cost
+		sum_total = profit + (self.amount-cost)
+		return {"shares": shares, "cost": cost, "return":pnl, "sum": sum_total}
+
+	def display(self, portfolio):
+		shares = []
+		t = PrettyTable(['share', 'price($)', 'yield(%)', 'benefit($)'])
+		for share in portfolio['shares']:
+			benef = share['price']*share['profit']/100
+			s = [share['share'], share['price'], share['profit'], round(benef, 2)]
+			shares.append(s)
+
+		for share in shares:
+			t.add_row(share)
+		t.add_row(['Total price', '######', '######', str(round(portfolio['cost'], 2))+"$"])
+		t.add_row(['Total earned', '######', '######', str(round(portfolio['return'], 2))+"$"])
+		t.add_row(['Total recovered', '######', '######', str(round(portfolio['sum'], 2))+"$"])
+		print(f"Starting balance : {self.amount}$")
 		print(t.get_string(title="AlgoInvest&Trade"))
 
 	def main(self):
+		shares = self.serializer(self.filename)
+		n = len(shares)
 		max_profit = 0
-		for size_combinations in range(len(self.actions)+1):
-			if size_combinations > 0:
-				combinations = list(self.combinations(self.actions, size_combinations))
-				for combination in combinations:
-					total_cost = self.calculate_cost(combination)
-					profit = self.calculate_yield(combination)
-					if total_cost < self.sold and profit > max_profit:
-						max_profit = profit
-						percentage = (profit-self.sold)/self.sold*100
-						best_combination = {"combination": combination, 
-							"total_cost": total_cost, "yields":max_profit, "percentage": percentage}
-		self.display_result(best_combination)
+		for size in range(1,n+1):
+			combinations = list(self.combinations(shares, size))
+			for comb in combinations:
+				cost, profit = self.calculate_cost_and_profit(comb)
+				if cost < self.amount and profit > max_profit:
+					max_profit = profit
+					portfolio = self.portfolio(comb, cost, profit)
+		self.display(portfolio)
 
 					
 if __name__ == '__main__':
 	start_time = time.time()
-	bruteforce = BruteForce(actions, sold)
+	amount = 500
+	filename = 'dataset0'
+	bruteforce = BruteForce(amount, filename)
 	bruteforce.main()
 	print("--- %s seconds ---" % (time.time() - start_time))
 		

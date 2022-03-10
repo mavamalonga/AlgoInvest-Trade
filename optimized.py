@@ -6,7 +6,7 @@ import time
 import csv
 
 
-class AlgoInvestTrade:
+class Dynamic_Approach:
 	def __init__(self, amount, filename):
 		self.amount = amount
 		self.filename = filename
@@ -65,7 +65,7 @@ class AlgoInvestTrade:
 		for share in shares:
 			t.add_row(share)
 		t.add_row(['Total price', '######', '######', str(round(portfolio['cost'], 2))+"$"])
-		t.add_row(['Total earned', '######', '######', str(round(portfolio['return'], 2))+"$"])
+		t.add_row(['Total profit', '######', '######', str(round(portfolio['return'], 2))+"$"])
 		t.add_row(['Total recovered', '######', '######', str(round(portfolio['sum'], 2))+"$"])
 		print(f"Starting balance : {self.amount}$")
 		print(t.get_string(title="AlgoInvest&Trade"))
@@ -81,6 +81,6 @@ if __name__ == '__main__':
 	start_time = time.time()
 	amount = 500
 	filename = 'dataset1'
-	algoInvestTrade = AlgoInvestTrade(amount, filename)
+	algoInvestTrade = Dynamic_Approach(amount, filename)
 	algoInvestTrade.main()
 	print("--- %s seconds ---" % (time.time() - start_time))
