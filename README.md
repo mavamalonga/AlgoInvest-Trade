@@ -5,10 +5,17 @@
 <body>
 	<h1>AlgoInvest&Trade</h1>
 	<p>
-		Epic Events est une entreprise de conseil et de gestion dans l'événemenentiel qui 
-		répond aux besoins des start-up voulant des <strong>fêtes épiques</strong>.
-		Retrouvez dans ce repository le logiciel de gestion relation client (CRM) de l'entreprise, 
-		qui effectue le suivide tous les clients et événemenets.
+		Le programme définie la meilleure stratégie d'investissement à partir d'une liste d'actions qui lui est fournit.<br><br>
+		Deux approches de calcul pour arriver à la solution la plus optimisée.<br>
+		<h2>La méthode bruteforce (limitée à des données de petite taille)</h2><br>
+		Est une technique de resolution de problème dans laquelle la solution possible 
+		à un probleme est decouverte en vérifiant chaque réponse une par une, en
+		déterminant si le resultat satisfait ou non l'énonce d'un probleme.<br><br>
+		<h2>L'approche dynamique (solution plus optimisée, couteux en taille mémoire)</h2><br>
+		La programmation dynamique est une technique algorithmique pour résoudre
+		un problème d'optimisation en le décomposant en sous-problemes plus 
+		simples et en utilisant le fait que la solution optimale au problème
+		global dépend de la solution optimale à ses sous problèmes.
 	</p>
 	<h2>Installtion</h2>
 	<p>
@@ -22,8 +29,8 @@
 	</p>
 	<h2>Exécution</h2>
 	<ul>
-		<li>Se déplacer dans le répertoire racine epic-events <code>cd epic-events/epic-events</code></li>
-		<li>Lancer le serveur django <code>python manage.py runserver</code></li>
+		<li>Se déplacer dans le répertoire racine AlgoInvest <code>cd AlgoInvest</code></li>
+		<li>Pour lancer l'algorithme<code>python manage.py runserver</code></li>
 	</ul>
 </body>
 </html>
