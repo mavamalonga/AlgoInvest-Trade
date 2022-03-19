@@ -80,7 +80,7 @@ class Dynamic_Approach:
 if __name__ == '__main__':
 	start_time = time.time()
 	amount = 500
-	filename = 'dataset2'
+	filename = 'dataset1'
 	algoInvestTrade = Dynamic_Approach(amount, filename)
 	algoInvestTrade.main()
 	print("--- %s seconds ---" % (time.time() - start_time))
