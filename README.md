@@ -37,6 +37,7 @@
 		<li>Pour changer la liste d'actions/datasets : <br>
 			<li>Ouvrir le fichier optimized_v1.py</li>
 			<li>Modifier la variable filename ligne 84 avec le bon filename</li>
+		</li>
 	</ul>
 </body>
 </html>
