@@ -33,7 +33,10 @@
 	<ul>
 		<li>Se déplacer dans le répertoire racine AlgoInvest <code>cd AlgoInvest</code></li>
 		<li>Pour lancer l'algorithme bruteforce<code>python bruteforce.py</code></li>
-		<li>Pour lancer l'algorithme optimisé<code>python optimized.py</code></li>
+		<li>Pour lancer l'algorithme optimisé<code>python optimized_v1.py</code></li>
+		<li>Pour changer la liste d'actions/datasets : <br>
+			<li>Ouvrir le fichier optimized_v1.py</li>
+			<li>Modifier la variable filename ligne 84 avec le bon filename</li>
 	</ul>
 </body>
 </html>
