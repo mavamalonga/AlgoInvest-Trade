@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>flake8 violations: optimized_v1.py</title>
+      <meta http-equiv="Content-Type" value="text/html; charset=UTF-8">
+      <link rel="stylesheet" href="styles.css">
+<script>
+function bindHandler(link) {
+   var code = link.getAttribute('data-code');
+   var key = location.pathname + '#' + code;
+
+   var ul = link.parentNode.querySelector('.details');
+   if (sessionStorage[key] != 'open') {
+      ul.style.display = 'none';
+   }
+   link.addEventListener('click', function (event) {
+      if (!ul.style.display || ul.style.display == 'none') {
+         ul.style.display = 'block';
+         sessionStorage[key] = 'open';
+      } else {
+         ul.style.display = 'none';
+         sessionStorage[key] = 'closed';
+      }
+   });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+   var links = document.querySelectorAll('#index > li > a');
+   for (var i = 0; i < links.length; i++) {
+      bindHandler(links[i]);
+   }
+});
+</script>
+   </head>
+   <body>
+      <div id="masthead" class="sev-2"></div>
+      <div id="page">
+         <p id="srclink">
+            <a title="View full annotated source"
+               href="optimized_v1.source.html">
+               <img src="file.svg" alt="&#x2261;">
+            </a></p>
+         <h1>
+            <a href="index.html">
+               <img src="back.svg" alt="&#x2B05;">
+               optimized_v1.py
+            </a>
+         </h1>
+
+         <ul id="index">
+         
+         <li>
+            <a data-code="E501">
+               <span class="count sev-2">
+                  9
+               </span>
+               <strong>E501:</strong> line too long (98 > 79 characters)
+               
+                  (and 5 similar)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <p>Line too long (98 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l34">
+                  <tt><i>34</i>                     <span class="n">reward</span> <span class="o">=</span> <span class="n">shares</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;price&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="n">shares</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;price&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">shares</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;profit&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (103 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l35">
+                  <tt><i>35</i>                     <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">w</span><span class="o">-</span><span class="n">ceil</span><span class="p">(</span><span class="n">shares</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;price&#39;</span><span class="p">])],</span> <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">w</span><span class="p">])</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (83 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l46">
+                  <tt><i>46</i>             <span class="c1"># on retire le prix parce que il est deja present dans le calcul reward</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (82 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l47">
+                  <tt><i>47</i>             <span class="k">if</span> <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">amount</span><span class="p">]</span> <span class="o">==</span> <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">amount</span><span class="o">-</span><span class="n">ceil</span><span class="p">(</span><span class="n">share</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])]</span><span class="o">+</span><span class="n">reward</span><span class="p">:</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (83 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l55">
+                  <tt><i>55</i>         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;shares&quot;</span><span class="p">:</span> <span class="n">portfolio</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="n">cost</span><span class="p">,</span> <span class="s2">&quot;return&quot;</span><span class="p">:</span> <span class="n">pnl</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">sum_total</span><span class="p">}</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (82 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l62">
+                  <tt><i>62</i>             <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">share</span><span class="p">[</span><span class="s1">&#39;share&#39;</span><span class="p">],</span> <span class="n">share</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">share</span><span class="p">[</span><span class="s1">&#39;profit&#39;</span><span class="p">],</span> <span class="nb">round</span><span class="p">(</span><span class="n">benef</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (92 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l67">
+                  <tt><i>67</i>         <span class="n">t</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Total price&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">portfolio</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;$&quot;</span><span class="p">])</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (95 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l68">
+                  <tt><i>68</i>         <span class="n">t</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Total profit&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">portfolio</span><span class="p">[</span><span class="s1">&#39;return&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;$&quot;</span><span class="p">])</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (95 > 79 characters):</p>
+               
+               <a href="optimized_v1.source.html#l69">
+                  <tt><i>69</i>         <span class="n">t</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Total recovered&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="s1">&#39;######&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">portfolio</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot;$&quot;</span><span class="p">])</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         </ul>
+      </div>
+   </body>
+</html>

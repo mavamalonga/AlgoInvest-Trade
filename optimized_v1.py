@@ -19,7 +19,7 @@ class Dynamic_Approach:
                 share = ', '.join(row).split(",")
                 if share[0] != 'name' and float(share[1]) > 0.0:
                     shares.append({"share": share[0], "price": float(share[1]),
-                    "profit": float(share[2])})
+                                   "profit": float(share[2])})
         new_shares = sorted(shares, key=lambda d: d['price'])
         return new_shares
 
